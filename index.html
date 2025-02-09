@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product list with cart</title>
+    <link rel="stylesheet" href="src/style/style.css" />
+  </head>
+  <body>
+     <div class="modal-container">
+    <div class="modal">
+
+  </div>
+    <main>
+      <section aria-labelledby="menu-title" id="menu">
+        <h1>Desserts</h1>
+
+        <ul role="list" class="list">
+          <!-- <li role="listitem" class="list__item" aria-label="Waffle com Frutas">
+            <div class="list__item__image image__waffle">
+              <img
+                class="img_item"
+                src="src/assets/images/image-waffle-desktop.jpg"
+                alt=""
+              />
+
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt=""
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Waffle</span>
+              <p class="name">Waffle with Berries</p>
+              <p class="price">$ 6,50</p>
+            </div>
+          </li>
+          <li
+            role="listitem"
+            class="list__item"
+            aria-label="Crème Brûlée de Baunilha"
+          >
+            <div class="list__item__image image__creme">
+              <img
+                class="img_item"
+                src="src/assets/images/image-creme-brulee-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt="   "
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Crème Brûlée</span>
+              <p class="name">Vanilla Bean Crème Brûlée</p>
+              <p class="price">$ 7,00</p>
+            </div>
+          </li>
+
+          <li
+            role="listitem"
+            class="list__item"
+            aria-label="Mix de Macarons (5 unid.)"
+          >
+            <div class="list__item__image image__macaron">
+              <img
+                class="img_item"
+                src="src/assets/images/image-macaron-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt="   "
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Macaron</span>
+              <p class="name">Macaron Mix of Five</p>
+              <p class="price">$ 8,00</p>
+            </div>
+          </li>
+          <li role="listitem" class="list__item" aria-label="Tiramisu Clássico">
+            <div class="list__item__image image__tiramisu">
+              <img
+                class="img_item"
+                src="src/assets/images/image-tiramisu-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt="   "
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Tiramisu</span>
+              <p class="name">Classic Tiramisu</p>
+              <p class="price">$ 5,50</p>
+            </div>
+          </li>
+          <li
+            role="listitem"
+            class="list__item"
+            aria-label="Baklava de Pistache"
+          >
+            <div class="list__item__image image__baklava">
+              <img
+                class="img_item"
+                src="src/assets/images/image-baklava-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt="   "
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Baklava</span>
+              <p class="name">Baklava de Pistache</p>
+              <p class="price">$ 4,00</p>
+            </div>
+          </li>
+          <li role="listitem" class="list__item" aria-label="Pie de Limão">
+            <div class="list__item__image image__meringue">
+              <img
+                class="img_item"
+                src="src/assets/images/image-meringue-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt=""
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Pie</span>
+              <p class="name">Lemon Meringue Pie</p>
+              <p class="price">$ 5,00</p>
+            </div>
+          </li>
+          <li
+            role="listitem"
+            class="list__item"
+            aria-label="Cake de Red Velvet"
+          >
+            <div class="list__item__image image__cake">
+              <img
+                class="img_item"
+                src="src/assets/images/image-cake-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt="   "
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Cake</span>
+              <p class="name">Red Velvet Cake</p>
+              <p class="price">$ 4,50</p>
+            </div>
+          </li>
+          <li
+            role="listitem"
+            class="list__item"
+            aria-label="Brownie de Caramelo Salgado"
+          >
+            <div class="list__item__image image__brownie">
+              <img
+                class="img_item"
+                src="src/assets/images/image-brownie-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt="   "
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Brownie</span>
+              <p class="name">Salted Caramel Brownie</p>
+              <p class="price">$ 4,50</p>
+            </div>
+          </li>
+          <li
+            role="listitem"
+            class="list__item"
+            aria-label="Panna Cotta de Chocolate"
+          >
+            <div class="list__item__image image__panna-cotta">
+              <img
+                class="img_item"
+                src="src/assets/images/image-panna-cotta-desktop.jpg"
+                alt=""
+              />
+              <div class="add__cart">
+                <img
+                  src="src/assets/images/icon-add-to-cart.svg"
+                  alt=""
+                  class="add__cart__icon"
+                />
+                <p>Add to cart</p>
+              </div>
+            </div>
+            <div class="list__item__decription">
+              <span>Panna Cotta</span>
+              <p class="name">Vanilla Panna Cotta</p>
+              <p class="price">$ 6,50</p>
+            </div>
+          </li> -->
+        </ul>
+      </section>
+
+      <!-- Carrinho de compras -->
+      <section aria-labelledby="cart-title" id="cart_container">
+        <div class="cart">
+          <h3 id="cart-title">Your Cart (<span id="cart-count">0</span>)</h3>
+
+          <ul>
+            <li>
+              <img src="src/assets/images/illustration-empty-cart.svg" alt="" />
+              <p>Your added items will appear here</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </body>
+  <script src="src/script/script.js"></script>
+</html>
