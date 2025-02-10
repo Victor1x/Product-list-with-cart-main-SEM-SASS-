@@ -168,37 +168,231 @@ menu.forEach((item) => {
 
   // Adicionando o <li> à lista
   list.appendChild(listItem);
-});
 
-document.querySelectorAll(".add__cart").forEach((button) => {
-  button.addEventListener("click", () => {
-    button.innerHTML = "";
-    button.classList.add("active");
-    const icon_de_menos = document.createElement("p");
-    icon_de_menos.classList.add("icon__cart");
-    icon_de_menos.classList.add("icone_de_menos");
-    icon_de_menos.textContent = "-";
+  document.querySelectorAll(".add__cart").forEach((button) => {
+    button.addEventListener("click", () => {
+      button.innerHTML = "";
+      button.classList.add("active");
+      const icon_de_menos = document.createElement("p");
+      icon_de_menos.classList.add("icon__cart");
+      icon_de_menos.classList.add("icone_de_menos");
+      icon_de_menos.textContent = "-";
 
-    const quantity = document.createElement("p");
-    quantity.classList.add("quantity");
-    quantity.textContent = 1;
+      const quantity = document.createElement("p");
+      quantity.classList.add("quantity");
+      quantity.textContent = 1;
 
-    const icon_de_mais = document.createElement("p");
-    icon_de_mais.classList.add("icon__cart");
-    icon_de_mais.classList.add("icone_de_mais");
-    icon_de_mais.textContent = "+";
+      const icon_de_mais = document.createElement("p");
+      icon_de_mais.classList.add("icon__cart");
+      icon_de_mais.classList.add("icone_de_mais");
+      icon_de_mais.textContent = "+";
 
-    button.append(icon_de_menos, quantity, icon_de_mais);
+      button.append(icon_de_menos, quantity, icon_de_mais);
+
+      createCart(item ,quantity.textContent);
+
+      icon_de_mais.addEventListener("click", (e) => {
+        e.stopPropagation(); // Impede que o clique seja propagado para o botão pai
+        quantity.textContent = Number(quantity.textContent) + 1;
+      });
+
+      // Se desejar implementar a funcionalidade de diminuir a quantidade:
+      icon_de_menos.addEventListener("click", (e) => {
+        e.stopPropagation();
+        let currentQuantity = Number(quantity.textContent);
+        if (currentQuantity > 1) {
+          quantity.textContent = currentQuantity - 1;
+        } else {
+          // Se a quantidade chegar a 0 (ou 1 e o usuário clicar em "-"), restaura o botão original
+          button.innerHTML = "";
+          button.classList.remove("active");
+
+          const cartIcon = document.createElement("img");
+          cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+          cartIcon.alt = "icon-add-to-cart";
+          cartIcon.classList.add("add__cart__icon");
+
+          const cartText = document.createElement("p");
+          cartText.textContent = "Add to cart";
+
+          button.append(cartIcon, cartText);
+        }
+      });
+    });
   });
 });
-document.querySelectorAll(".icon__cart").forEach((icon) => {
-  icon.addEventListener("click", () => {
-    if (icon.classList.contains("icone_de_mais")) {
-      console.log(typeof quantity.textContent);
-      quantity.textContent = parseInt(quantity.textContent) + 1;
-    } else if (icon.classList.contains("icone_de_menos")) {
-      console.log(quantity.textContent, "icon_de_menos");
-      quantity.textContent = parseInt(quantity.textContent) - 1;
-    }
-  });
-});
+
+// document.querySelectorAll(".add__cart").forEach((button) => {
+//   button.addEventListener("click", () => {
+//     button.innerHTML = "";
+//     button.classList.add("active");
+//     const icon_de_menos = document.createElement("p");
+//     icon_de_menos.classList.add("icon__cart");
+//     icon_de_menos.classList.add("icone_de_menos");
+//     icon_de_menos.textContent = "-";
+
+//     const quantity = document.createElement("p");
+//     quantity.classList.add("quantity");
+//     quantity.textContent = 1;
+
+//     const icon_de_mais = document.createElement("p");
+//     icon_de_mais.classList.add("icon__cart");
+//     icon_de_mais.classList.add("icone_de_mais");
+//     icon_de_mais.textContent = "+";
+
+//     button.append(icon_de_menos, quantity, icon_de_mais);
+
+//     icon_de_mais.addEventListener("click", (e) => {
+//       e.stopPropagation(); // Impede que o clique seja propagado para o botão pai
+//       quantity.textContent = Number(quantity.textContent) + 1;
+//     });
+
+//     // Se desejar implementar a funcionalidade de diminuir a quantidade:
+//     icon_de_menos.addEventListener("click", (e) => {
+//       e.stopPropagation();
+//       let currentQuantity = Number(quantity.textContent);
+//       if (currentQuantity > 1) {
+//         quantity.textContent = currentQuantity - 1;
+//       } else {
+//         // Se a quantidade chegar a 0 (ou 1 e o usuário clicar em "-"), restaura o botão original
+//         button.innerHTML = "";
+//         button.classList.remove("active");
+
+//         const cartIcon = document.createElement("img");
+//         cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+//         cartIcon.alt = "icon-add-to-cart";
+//         cartIcon.classList.add("add__cart__icon");
+
+//         const cartText = document.createElement("p");
+//         cartText.textContent = "Add to cart";
+
+//         button.append(cartIcon, cartText);
+//       }
+//     });
+//   });
+// });
+function createCart(item ,quantity) {
+  // Cria o container principal da seção do carrinho com a classe "cart"
+  const cart = document.querySelector(".cart");
+
+  // 1. Criação da lista de itens (ul com class "cart__list")
+  const ulCart = document.querySelector(".cart__list");
+
+  // 1.1 Criação de um item do carrinho (li com class "li__item__cart")
+  const liItemCart = document.createElement("li");
+  liItemCart.classList.add("li__item__cart");
+
+  // 1.1.1 Criação da div de descrição do item
+  const divDescription = document.createElement("div");
+  divDescription.classList.add("item__cart__description");
+
+  // Nome do item
+  const pName = document.createElement("p");
+  pName.classList.add("name");
+  pName.textContent = item.name;
+
+  // Div que agrupa quantidade e preços
+  const divQuantityPrice = document.createElement("div");
+  divQuantityPrice.classList.add("quantity_price_item");
+
+  // Parágrafo para a quantidade
+  const pQuantityCart = document.createElement("p");
+  pQuantityCart.classList.add("quantity_cart");
+
+  // Span que mostra a quantidade (valor unitário)
+  const spanCartPriceTotal = document.createElement("span");
+  spanCartPriceTotal.classList.add("cart__price__total");
+  spanCartPriceTotal.textContent = quantity.textContent;
+
+  // Adiciona o span e o "x" indicando quantidade
+  pQuantityCart.appendChild(spanCartPriceTotal);
+  pQuantityCart.insertAdjacentText("beforeend", "x");
+
+  // Parágrafo para o preço unitário do item
+  const pPriceItemCart = document.createElement("p");
+  pPriceItemCart.classList.add("price_item_cart");
+  pPriceItemCart.textContent = item.price;
+
+  // Parágrafo para o total do item (com span interno)
+  const pTotalItemCart = document.createElement("p");
+  pTotalItemCart.classList.add("total_item_cart");
+
+  // Cria e adiciona o texto "$"
+  const textDollar = document.createTextNode("$");
+  pTotalItemCart.appendChild(textDollar);
+
+  // Cria o <span> com a classe e o conteúdo "13"
+  const spanTotal = document.createElement("span");
+  spanTotal.classList.add("span_total_item_cart");
+  spanTotal.textContent = Number(quantity.textContent) * item.price;
+  pTotalItemCart.appendChild(spanTotal);
+
+  // Cria e adiciona o texto ".00"
+  const textDecimals = document.createTextNode(".00");
+  pTotalItemCart.appendChild(textDecimals);
+
+  // Agrupa os parágrafos de quantidade, preço unitário e total
+  divQuantityPrice.appendChild(pQuantityCart);
+  divQuantityPrice.appendChild(pPriceItemCart);
+  divQuantityPrice.appendChild(pTotalItemCart);
+
+  // Adiciona o nome e a div de quantidade/preço na descrição do item
+  divDescription.appendChild(pName);
+  divDescription.appendChild(divQuantityPrice);
+
+  // 1.1.2 Cria a imagem para remover o item
+  const imgRemove = document.createElement("img");
+  imgRemove.classList.add("icon__remove__item__cart");
+  imgRemove.src = "src/assets/images/icon-remove-item.svg";
+  imgRemove.alt = "";
+
+  // Monta o item do carrinho (li)
+  liItemCart.appendChild(divDescription);
+  liItemCart.appendChild(imgRemove);
+
+  // Adiciona o item (li) à lista (ul)
+  ulCart.appendChild(liItemCart);
+
+  // 2. Criação da seção de "Order Total"
+  // <div class="div__price__total">
+  const divPriceTotal = document.createElement("div");
+  divPriceTotal.classList.add("div__price__total");
+
+  const pOrderTotal = document.createElement("p");
+  pOrderTotal.textContent = "Order Total";
+
+  const h4PriceTotal = document.createElement("h4");
+  h4PriceTotal.classList.add("price__total");
+  h4PriceTotal.textContent = "$45.90";
+
+  divPriceTotal.appendChild(pOrderTotal);
+  divPriceTotal.appendChild(h4PriceTotal);
+
+  // 3. Criação da seção "carbon neutral"
+  // <div class="div__carbon__neutral">
+  const divCarbonNeutral = document.createElement("div");
+  divCarbonNeutral.classList.add("div__carbon__neutral");
+
+  const imgCarbonNeutral = document.createElement("img");
+  imgCarbonNeutral.src = "src/assets/images/icon-carbon-neutral.svg";
+  imgCarbonNeutral.alt = "";
+
+  const pCarbonNeutral = document.createElement("p");
+  pCarbonNeutral.innerHTML =
+    'This is a <span class="span__carbon__neutral">carbon-neutral</span> delivery';
+
+  divCarbonNeutral.appendChild(imgCarbonNeutral);
+  divCarbonNeutral.appendChild(pCarbonNeutral);
+
+  // 4. Criação do botão de checkout
+  const buttonCheckout = document.createElement("button");
+  buttonCheckout.classList.add("button__checkout");
+  buttonCheckout.textContent = "Cofirm Order";
+
+  // 5. Monta a estrutura dentro da div "cart"
+  // Adiciona a lista de itens (ul) e as demais seções à div "cart"
+  cart.appendChild(ulCart);
+  cart.appendChild(divPriceTotal);
+  cart.appendChild(divCarbonNeutral);
+  cart.appendChild(buttonCheckout);
+}

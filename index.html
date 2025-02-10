@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="src/style/style.css" />
   </head>
   <body>
-     <div class="modal-container">
-    <div class="modal">
-
-  </div>
+    <div class="modal-container">
+      <div class="modal"></div>
+    </div>
     <main>
       <section aria-labelledby="menu-title" id="menu">
         <h1>Desserts</h1>
@@ -246,14 +245,81 @@
       <!-- Carrinho de compras -->
       <section aria-labelledby="cart-title" id="cart_container">
         <div class="cart">
-          <h3 id="cart-title">Your Cart (<span id="cart-count">0</span>)</h3>
+          <h3 id="cart__title">Your Cart (<span id="cart-count">0</span>)</h3>
 
-          <ul>
-            <li>
+          <ul role="list" class="cart__list">
+            <!-- <li class="li__cart__empty">
               <img src="src/assets/images/illustration-empty-cart.svg" alt="" />
               <p>Your added items will appear here</p>
+            </li> -->
+            <!-- <li class="li__item__cart">
+              <div class="item__cart__description">
+                <p class="name">Waffle with Berries</p>
+                <div class="quantity_price_item">
+                  <p class="quantity_cart">
+                    <span class="cart__price__total">1</span>x
+                  </p>
+                  <p class="price_item_cart">$ 6.50</p>
+                  <p class="total_item_cart">$ 13</p>
+                </div>
+              </div>
+              <img
+                class="icon__remove__item__cart"
+                src="src/assets/images/icon-remove-item.svg"
+                alt=" "
+              />
+            </li>
+            <li class="li__item__cart">
+              <div class="item__cart__description">
+                <p class="name">Waffle with Berries</p>
+                <div class="quantity_price_item">
+                  <p class="quantity_cart">
+                    <span class="cart__price__total">1</span>x
+                  </p>
+                  <p class="price_item_cart">$ 6.50</p>
+                  <p class="total_item_cart">$ 13</p>
+                </div>
+              </div>
+              <img
+                class="icon__remove__item__cart"
+                src="src/assets/images/icon-remove-item.svg"
+                alt=" "
+              />
+            </li>
+            <li class="li__item__cart">
+              <div class="item__cart__description">
+                <p class="name">Waffle with Berries</p>
+                <div class="quantity_price_item">
+                  <p class="quantity_cart">
+                    <span class="cart__price__total">1</span>x
+                  </p>
+                  <p class="price_item_cart">$ 6.50</p>
+                  <p class="total_item_cart">
+                    $<span class="span_total_item_cart">13</span>.00
+                  </p>
+                </div>
+              </div>
+              <img
+                class="icon__remove__item__cart"
+                src="src/assets/images/icon-remove-item.svg"
+                alt=" "
+              />
             </li>
           </ul>
+          
+          <div class="div__price__total">
+            <p>Order Total</p>
+            <h4 class="price__total">$45.90</h4>
+          </div>
+
+          <div class="div__carbon__neutral">
+            <img src="src/assets/images/icon-carbon-neutral.svg" alt="" />
+            <p>
+              This is a
+              <span class="span__carbon__neutral">carbon-neutral</span> delivery
+            </p>
+          </div>
+          <button class="button__checkout">Cofirm Order</button> -->
         </div>
       </section>
     </main>
