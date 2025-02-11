@@ -8,7 +8,7 @@ const menu = [
     },
     name: "Waffle with Berries",
     category: "Waffle",
-    price: " $ 6.50",
+    price: " 6.50",
   },
   {
     image: {
@@ -19,7 +19,7 @@ const menu = [
     },
     name: "Vanilla Bean Crème Brûlée",
     category: "Crème Brûlée",
-    price: "  $ 7.00",
+    price: "  7.00",
   },
   {
     image: {
@@ -30,7 +30,7 @@ const menu = [
     },
     name: "Macaron Mix of Five",
     category: "Macaron",
-    price: " $ 8.00",
+    price: " 8.00",
   },
   {
     image: {
@@ -41,7 +41,7 @@ const menu = [
     },
     name: "Classic Tiramisu",
     category: "Tiramisu",
-    price: " $ 5.50",
+    price: "5.50",
   },
   {
     image: {
@@ -52,7 +52,7 @@ const menu = [
     },
     name: "Pistachio Baklava",
     category: "Baklava",
-    price: "$ 4.00",
+    price: "4.00",
   },
   {
     image: {
@@ -63,7 +63,7 @@ const menu = [
     },
     name: "Lemon Meringue Pie",
     category: "Pie",
-    price: "$ 5.00",
+    price: "5.00",
   },
   {
     image: {
@@ -74,7 +74,7 @@ const menu = [
     },
     name: "Red Velvet Cake",
     category: "Cake",
-    price: "$ 4.50 ",
+    price: "4.50 ",
   },
   {
     image: {
@@ -85,7 +85,7 @@ const menu = [
     },
     name: "Salted Caramel Brownie",
     category: "Brownie",
-    price: "$ 4.50",
+    price: "4.50",
   },
   {
     image: {
@@ -96,9 +96,10 @@ const menu = [
     },
     name: "Vanilla Panna Cotta",
     category: "Panna Cotta",
-    price: "$ 6.50 ",
+    price: "6.50 ",
   },
 ];
+
 menu.forEach((item) => {
   const list = document.querySelector(".list");
 
@@ -155,7 +156,8 @@ menu.forEach((item) => {
 
   const priceParagraph = document.createElement("p");
   priceParagraph.classList.add("price");
-  priceParagraph.textContent = item.price;
+  priceParagraph.textContent = "$ " + item.price;
+  // priceParagraph.textContent = item.price;
 
   // Adicionando os textos à div da descrição
   descriptionDiv.appendChild(categorySpan);
@@ -168,110 +170,63 @@ menu.forEach((item) => {
 
   // Adicionando o <li> à lista
   list.appendChild(listItem);
+});
 
-  document.querySelectorAll(".add__cart").forEach((button) => {
-    button.addEventListener("click", () => {
-      button.innerHTML = "";
-      button.classList.add("active");
-      const icon_de_menos = document.createElement("p");
-      icon_de_menos.classList.add("icon__cart");
-      icon_de_menos.classList.add("icone_de_menos");
-      icon_de_menos.textContent = "-";
+const items__cart = [];
 
-      const quantity = document.createElement("p");
-      quantity.classList.add("quantity");
-      quantity.textContent = 1;
+document.querySelectorAll(".add__cart").forEach((button, index) => {
+  button.addEventListener("click", () => {
+    button.innerHTML = "";
+    button.classList.add("active");
+    const icon_de_menos = document.createElement("p");
+    icon_de_menos.classList.add("icon__cart");
+    icon_de_menos.classList.add("icone_de_menos");
+    icon_de_menos.textContent = "-";
 
-      const icon_de_mais = document.createElement("p");
-      icon_de_mais.classList.add("icon__cart");
-      icon_de_mais.classList.add("icone_de_mais");
-      icon_de_mais.textContent = "+";
+    const quantity = document.createElement("p");
+    quantity.classList.add("quantity");
+    quantity.textContent = 1;
 
-      button.append(icon_de_menos, quantity, icon_de_mais);
+    const icon_de_mais = document.createElement("p");
+    icon_de_mais.classList.add("icon__cart");
+    icon_de_mais.classList.add("icone_de_mais");
+    icon_de_mais.textContent = "+";
 
-      createCart(item ,quantity.textContent);
+    button.append(icon_de_menos, quantity, icon_de_mais);
 
-      icon_de_mais.addEventListener("click", (e) => {
-        e.stopPropagation(); // Impede que o clique seja propagado para o botão pai
-        quantity.textContent = Number(quantity.textContent) + 1;
-      });
+    createCart(menu[index], quantity.textContent);
 
-      // Se desejar implementar a funcionalidade de diminuir a quantidade:
-      icon_de_menos.addEventListener("click", (e) => {
-        e.stopPropagation();
-        let currentQuantity = Number(quantity.textContent);
-        if (currentQuantity > 1) {
-          quantity.textContent = currentQuantity - 1;
-        } else {
-          // Se a quantidade chegar a 0 (ou 1 e o usuário clicar em "-"), restaura o botão original
-          button.innerHTML = "";
-          button.classList.remove("active");
+    icon_de_mais.addEventListener("click", (e) => {
+      e.stopPropagation(); // Impede que o clique seja propagado para o botão pai
+      quantity.textContent = Number(quantity.textContent) + 1;
+    });
 
-          const cartIcon = document.createElement("img");
-          cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-          cartIcon.alt = "icon-add-to-cart";
-          cartIcon.classList.add("add__cart__icon");
+    // Se desejar implementar a funcionalidade de diminuir a quantidade:
+    icon_de_menos.addEventListener("click", (e) => {
+      e.stopPropagation();
+      let currentQuantity = Number(quantity.textContent);
+      if (currentQuantity > 1) {
+        quantity.textContent = currentQuantity - 1;
+      } else {
+        // Se a quantidade chegar a 0 (ou 1 e o usuário clicar em "-"), restaura o botão original
+        button.innerHTML = "";
+        button.classList.remove("active");
 
-          const cartText = document.createElement("p");
-          cartText.textContent = "Add to cart";
+        const cartIcon = document.createElement("img");
+        cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+        cartIcon.alt = "icon-add-to-cart";
+        cartIcon.classList.add("add__cart__icon");
 
-          button.append(cartIcon, cartText);
-        }
-      });
+        const cartText = document.createElement("p");
+        cartText.textContent = "Add to cart";
+
+        button.append(cartIcon, cartText);
+      }
     });
   });
 });
 
-// document.querySelectorAll(".add__cart").forEach((button) => {
-//   button.addEventListener("click", () => {
-//     button.innerHTML = "";
-//     button.classList.add("active");
-//     const icon_de_menos = document.createElement("p");
-//     icon_de_menos.classList.add("icon__cart");
-//     icon_de_menos.classList.add("icone_de_menos");
-//     icon_de_menos.textContent = "-";
-
-//     const quantity = document.createElement("p");
-//     quantity.classList.add("quantity");
-//     quantity.textContent = 1;
-
-//     const icon_de_mais = document.createElement("p");
-//     icon_de_mais.classList.add("icon__cart");
-//     icon_de_mais.classList.add("icone_de_mais");
-//     icon_de_mais.textContent = "+";
-
-//     button.append(icon_de_menos, quantity, icon_de_mais);
-
-//     icon_de_mais.addEventListener("click", (e) => {
-//       e.stopPropagation(); // Impede que o clique seja propagado para o botão pai
-//       quantity.textContent = Number(quantity.textContent) + 1;
-//     });
-
-//     // Se desejar implementar a funcionalidade de diminuir a quantidade:
-//     icon_de_menos.addEventListener("click", (e) => {
-//       e.stopPropagation();
-//       let currentQuantity = Number(quantity.textContent);
-//       if (currentQuantity > 1) {
-//         quantity.textContent = currentQuantity - 1;
-//       } else {
-//         // Se a quantidade chegar a 0 (ou 1 e o usuário clicar em "-"), restaura o botão original
-//         button.innerHTML = "";
-//         button.classList.remove("active");
-
-//         const cartIcon = document.createElement("img");
-//         cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-//         cartIcon.alt = "icon-add-to-cart";
-//         cartIcon.classList.add("add__cart__icon");
-
-//         const cartText = document.createElement("p");
-//         cartText.textContent = "Add to cart";
-
-//         button.append(cartIcon, cartText);
-//       }
-//     });
-//   });
-// });
-function createCart(item ,quantity) {
+function createCart(item, quantity) {
   // Cria o container principal da seção do carrinho com a classe "cart"
   const cart = document.querySelector(".cart");
 
@@ -324,7 +279,7 @@ function createCart(item ,quantity) {
   // Cria o <span> com a classe e o conteúdo "13"
   const spanTotal = document.createElement("span");
   spanTotal.classList.add("span_total_item_cart");
-  spanTotal.textContent = Number(quantity.textContent) * item.price;
+  spanTotal.textContent = Number(quantity.textContent) * Number(item.price);
   pTotalItemCart.appendChild(spanTotal);
 
   // Cria e adiciona o texto ".00"
@@ -367,32 +322,63 @@ function createCart(item ,quantity) {
 
   divPriceTotal.appendChild(pOrderTotal);
   divPriceTotal.appendChild(h4PriceTotal);
-
+  let verificacao = false;
   // 3. Criação da seção "carbon neutral"
   // <div class="div__carbon__neutral">
-  const divCarbonNeutral = document.createElement("div");
-  divCarbonNeutral.classList.add("div__carbon__neutral");
-
-  const imgCarbonNeutral = document.createElement("img");
-  imgCarbonNeutral.src = "src/assets/images/icon-carbon-neutral.svg";
-  imgCarbonNeutral.alt = "";
-
-  const pCarbonNeutral = document.createElement("p");
-  pCarbonNeutral.innerHTML =
-    'This is a <span class="span__carbon__neutral">carbon-neutral</span> delivery';
-
-  divCarbonNeutral.appendChild(imgCarbonNeutral);
-  divCarbonNeutral.appendChild(pCarbonNeutral);
-
-  // 4. Criação do botão de checkout
-  const buttonCheckout = document.createElement("button");
-  buttonCheckout.classList.add("button__checkout");
-  buttonCheckout.textContent = "Cofirm Order";
-
   // 5. Monta a estrutura dentro da div "cart"
   // Adiciona a lista de itens (ul) e as demais seções à div "cart"
   cart.appendChild(ulCart);
   cart.appendChild(divPriceTotal);
-  cart.appendChild(divCarbonNeutral);
-  cart.appendChild(buttonCheckout);
+  if (!verificacao) {
+    const divCarbonNeutral = document.createElement("div");
+    divCarbonNeutral.classList.add("div__carbon__neutral");
+
+    const imgCarbonNeutral = document.createElement("img");
+    imgCarbonNeutral.src = "src/assets/images/icon-carbon-neutral.svg";
+    imgCarbonNeutral.alt = "";
+
+    const pCarbonNeutral = document.createElement("p");
+    pCarbonNeutral.innerHTML =
+      'This is a <span class="span__carbon__neutral">carbon-neutral</span> delivery';
+
+    divCarbonNeutral.appendChild(imgCarbonNeutral);
+    divCarbonNeutral.appendChild(pCarbonNeutral);
+
+    // 4. Criação do botão de checkout
+    const buttonCheckout = document.createElement("button");
+    buttonCheckout.classList.add("button__checkout");
+    buttonCheckout.textContent = "Cofirm Order";
+
+    cart.appendChild(divCarbonNeutral);
+    cart.appendChild(buttonCheckout);
+    verificacao = true;
+    console.log("entrou ");
+  }
 }
+
+// Função para criar dinamicamente o item "empty cart"
+function createEmptyCartItem(index) {
+  // Cria o elemento <li> e adiciona a classe
+
+  const li = document.createElement("li");
+  li.classList.add("li__cart__empty");
+
+  // Cria o elemento <img> e define os atributos
+  const img = document.createElement("img");
+  img.src = "src/assets/images/illustration-empty-cart.svg";
+  img.alt = "";
+
+  // Cria o elemento <p> e adiciona o texto
+  const p = document.createElement("p");
+  p.textContent = "Your added items will appear here";
+
+  // Adiciona o <img> e o <p> como filhos do <li>
+  li.appendChild(img);
+  li.appendChild(p);
+  const cart__list = document.querySelector(".cart__list");
+
+  cart__list.appendChild(li);
+  // Seleciona o <ul> pelo id e adiciona o <li>
+}
+
+// Chama a função para criar e inserir o item no DOM
