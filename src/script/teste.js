@@ -1,106 +1,3 @@
-// --- Dados do Menu ---
-const menu = [
-  {
-    image: {
-      thumbnail: "src/assets/images/image-waffle-thumbnail.jpg",
-      mobile: "src/assets/images/image-waffle-mobile.jpg",
-      tablet: "src/assets/images/image-waffle-tablet.jpg",
-      desktop: "src/assets/images/image-waffle-desktop.jpg",
-    },
-    name: "Waffle with Berries",
-    category: "Waffle",
-    price: " 6.50",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-creme-brulee-thumbnail.jpg",
-      mobile: "src/assets/images/image-creme-brulee-mobile.jpg",
-      tablet: "src/assets/images/image-creme-brulee-tablet.jpg",
-      desktop: "src/assets/images/image-creme-brulee-desktop.jpg",
-    },
-    name: "Vanilla Bean Crème Brûlée",
-    category: "Crème Brûlée",
-    price: "  7.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-macaron-thumbnail.jpg",
-      mobile: "src/assets/images/image-macaron-mobile.jpg",
-      tablet: "src/assets/images/image-macaron-tablet.jpg",
-      desktop: "src/assets/images/image-macaron-desktop.jpg",
-    },
-    name: "Macaron Mix of Five",
-    category: "Macaron",
-    price: " 8.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-tiramisu-thumbnail.jpg",
-      mobile: "src/assets/images/image-tiramisu-mobile.jpg",
-      tablet: "src/assets/images/image-tiramisu-tablet.jpg",
-      desktop: "src/assets/images/image-tiramisu-desktop.jpg",
-    },
-    name: "Classic Tiramisu",
-    category: "Tiramisu",
-    price: "5.50",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-baklava-thumbnail.jpg",
-      mobile: "src/assets/images/image-baklava-mobile.jpg",
-      tablet: "src/assets/images/image-baklava-tablet.jpg",
-      desktop: "src/assets/images/image-baklava-desktop.jpg",
-    },
-    name: "Pistachio Baklava",
-    category: "Baklava",
-    price: "4.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-meringue-thumbnail.jpg",
-      mobile: "src/assets/images/image-meringue-mobile.jpg",
-      tablet: "src/assets/images/image-meringue-tablet.jpg",
-      desktop: "src/assets/images/image-meringue-desktop.jpg",
-    },
-    name: "Lemon Meringue Pie",
-    category: "Pie",
-    price: "5.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-cake-thumbnail.jpg",
-      mobile: "src/assets/images/image-cake-mobile.jpg",
-      tablet: "src/assets/images/image-cake-tablet.jpg",
-      desktop: "src/assets/images/image-cake-desktop.jpg",
-    },
-    name: "Red Velvet Cake",
-    category: "Cake",
-    price: "4.50 ",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-brownie-thumbnail.jpg",
-      mobile: "src/assets/images/image-brownie-mobile.jpg",
-      tablet: "src/assets/images/image-brownie-tablet.jpg",
-      desktop: "src/assets/images/image-brownie-desktop.jpg",
-    },
-    name: "Salted Caramel Brownie",
-    category: "Brownie",
-    price: "4.50",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-panna-cotta-thumbnail.jpg",
-      mobile: "src/assets/images/image-panna-cotta-mobile.jpg",
-      tablet: "src/assets/images/image-panna-cotta-tablet.jpg",
-      desktop: "src/assets/images/image-panna-cotta-desktop.jpg",
-    },
-    name: "Vanilla Panna Cotta",
-    category: "Panna Cotta",
-    price: "6.50 ",
-  },
-];
-
 // --- Variáveis Globais ---
 const cartItems = {}; // Objeto que guardará os itens do carrinho, indexados (ex: pelo índice do menu)
 
@@ -139,8 +36,8 @@ if (!priceTotalElement) {
   priceTotalElement.classList.add("price__total");
   priceTotalElement.textContent = "$0.00";
 
-  divPriceTotal.appendChild(pOrderTotal);
-  divPriceTotal.appendChild(priceTotalElement);
+  divPriceTotal.append(pOrderTotal, priceTotalElement);
+  // divPriceTotal.appendChild();
   cartContainer.appendChild(divPriceTotal);
 
   // Cria a seção "carbon neutral"
@@ -152,8 +49,9 @@ if (!priceTotalElement) {
   const pCarbonNeutral = document.createElement("p");
   pCarbonNeutral.innerHTML =
     'This is a <span class="span__carbon__neutral">carbon-neutral</span> delivery';
-  divCarbonNeutral.appendChild(imgCarbonNeutral);
-  divCarbonNeutral.appendChild(pCarbonNeutral);
+
+  divCarbonNeutral.append(imgCarbonNeutral, pCarbonNeutral);
+  // divCarbonNeutral.appendChild();
   cartContainer.appendChild(divCarbonNeutral);
 
   // Cria o botão de checkout
@@ -194,12 +92,12 @@ menu.forEach((item, index) => {
   const cartText = document.createElement("p");
   cartText.textContent = "Add to cart";
 
-  addCartDiv.appendChild(cartIcon);
-  addCartDiv.appendChild(cartText);
+  addCartDiv.append(cartIcon, cartText);
+  // addCartDiv.appendChild(cartText);
 
   // Insere a imagem e o botão na div principal
-  imageDiv.appendChild(image);
-  imageDiv.appendChild(addCartDiv);
+  imageDiv.append(image, addCartDiv);
+  // imageDiv.appendChild(addCartDiv);
 
   // Cria a div de descrição
   const descriptionDiv = document.createElement("div");
@@ -216,13 +114,13 @@ menu.forEach((item, index) => {
   priceParagraph.classList.add("price");
   priceParagraph.textContent = "$" + item.price;
 
-  descriptionDiv.appendChild(categorySpan);
-  descriptionDiv.appendChild(nameParagraph);
-  descriptionDiv.appendChild(priceParagraph);
+  descriptionDiv.append(categorySpan, nameParagraph, priceParagraph);
+  // descriptionDiv.appendChild(nameParagraph);
+  // descriptionDiv.appendChild(priceParagraph);
 
   // Monta o <li> e insere na lista
-  listItem.appendChild(imageDiv);
-  listItem.appendChild(descriptionDiv);
+  listItem.append(imageDiv, descriptionDiv);
+  // listItem.appendChild(descriptionDiv);
   list.appendChild(listItem);
 
   // Evento do botão "Add to cart"
@@ -249,12 +147,14 @@ menu.forEach((item, index) => {
 
       // Cria o item no carrinho e guarda a referência
       const cartItemElement = createCart(item, index, 1);
+
       cartItems[index] = {
         item: item,
         quantity: 1,
         dom: cartItemElement, // Objeto com referências do DOM (veja a função createCart)
         button: addCartDiv, // Guarda a referência ao botão para que possa ser restaurado
       };
+
       updateOrderTotal();
 
       // Evento do botão "+"
@@ -323,7 +223,7 @@ function createCart(item, index, quantity) {
   pQuantityCart.classList.add("quantity_cart");
   const spanQuantity = document.createElement("span");
   spanQuantity.classList.add("cart__price__total");
-  spanQuantity.textContent =  quantity + "x"	; // quantidade inicial
+  spanQuantity.textContent = quantity + "x"; // quantidade inicial
   pQuantityCart.appendChild(spanQuantity);
 
   // Preço unitário
@@ -341,12 +241,9 @@ function createCart(item, index, quantity) {
   spanTotal.textContent = (quantity * unitPrice).toFixed(2);
   pTotalItemCart.appendChild(spanTotal);
 
-  divQuantityPrice.appendChild(pQuantityCart);
-  divQuantityPrice.appendChild(pPriceItemCart);
-  divQuantityPrice.appendChild(pTotalItemCart);
+  divQuantityPrice.append(pQuantityCart, pPriceItemCart, pTotalItemCart);
 
-  divDescription.appendChild(pName);
-  divDescription.appendChild(divQuantityPrice);
+  divDescription.append(pName, divQuantityPrice);
 
   // Ícone para remover o item (além dos controles “–” e “+”, o usuário pode clicar no ícone de remoção)
   const imgRemove = document.createElement("img");
@@ -356,23 +253,15 @@ function createCart(item, index, quantity) {
   imgRemove.addEventListener("click", () => {
     removeCartItem(index);
     // Também restaura o botão "Add to cart" para este item
+    // verifica se o obejeto da li exite e si o buuton que ativou a li exite (linha 258)
     if (cartItems[index] && cartItems[index].button) {
-      const btn = cartItems[index].button;
-      btn.innerHTML = "";
-      btn.classList.remove("active");
-      const newCartIcon = document.createElement("img");
-      newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-      newCartIcon.alt = "icon-add-to-cart";
-      newCartIcon.classList.add("add__cart__icon");
-      const newCartText = document.createElement("p");
-      newCartText.textContent = "Add to cart";
-      btn.append(newCartIcon, newCartText);
+      resetButton(index);
     }
-    updateOrderTotal();
+    updateOrderTotal(); // atualizar o valor total no carrinho
   });
 
-  liItemCart.appendChild(divDescription);
-  liItemCart.appendChild(imgRemove);
+  liItemCart.append(divDescription, imgRemove);
+  // liItemCart.appendChild(imgRemove);
   ulCart.appendChild(liItemCart);
 
   // Retorna um objeto com as referências dos elementos que serão atualizados futuramente
@@ -387,7 +276,7 @@ function createCart(item, index, quantity) {
 // Atualiza os valores de quantidade e total de um item do carrinho
 function updateCartItem(cartItem) {
   const { quantity, dom, item } = cartItem;
-  dom.spanQuantity.textContent = quantity;
+  dom.spanQuantity.textContent = quantity + "x";
   const unitPrice = parsePrice(item.price);
   dom.spanTotal.textContent = (quantity * unitPrice).toFixed(2);
 }
@@ -401,19 +290,26 @@ function removeCartItem(index) {
       dom.li.parentNode.removeChild(dom.li);
     }
     // Restaura o botão "Add to cart"
-    const btn = cartItems[index].button;
-    if (btn) {
-      btn.innerHTML = "";
-      btn.classList.remove("active");
-      const newCartIcon = document.createElement("img");
-      newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-      newCartIcon.alt = "icon-add-to-cart";
-      newCartIcon.classList.add("add__cart__icon");
-      const newCartText = document.createElement("p");
-      newCartText.textContent = "Add to cart";
-      btn.append(newCartIcon, newCartText);
-    }
+    resetButton(index);
+    //deleta a o objeto do li do cart(linha 305)
     delete cartItems[index];
   }
 }
 console.log(cartItems);
+
+function resetButton(index) {
+  const btn = cartItems[index].button;
+  //verifica si o btn existe(linha 314)
+  if (btn) {
+    // remover o estilo do botão quando está ativo
+    btn.innerHTML = ""; // tira todo o conteudo do botao (toda as tag)
+    btn.classList.remove("active"); // remove a class active
+    const newCartIcon = document.createElement("img"); // coloca a img.svg do carrinho
+    newCartIcon.src = "src/assets/images/icon-add-to-cart.svg"; // config da img
+    newCartIcon.alt = "icon-add-to-cart"; // config da img
+    newCartIcon.classList.add("add__cart__icon"); // add class na img
+    const newCartText = document.createElement("p"); // cria um paragrafo para colocar no button
+    newCartText.textContent = "Add to cart"; // texto do paragrafo
+    btn.append(newCartIcon, newCartText); // colocando icon(img) e text no button
+  }
+}
