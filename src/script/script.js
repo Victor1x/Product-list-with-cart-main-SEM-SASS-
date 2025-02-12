@@ -45,7 +45,6 @@ if (!priceTotalElement) {
   priceTotalElement.textContent = "$0.00";
 
   divPriceTotal.append(pOrderTotal, priceTotalElement);
-  // divPriceTotal.appendChild();
   cartContainer.appendChild(divPriceTotal);
 
   // Cria a seção "carbon neutral"
@@ -101,11 +100,9 @@ menu.forEach((item, index) => {
   cartText.textContent = "Add to cart";
 
   addCartDiv.append(cartIcon, cartText);
-  // addCartDiv.appendChild(cartText);
 
   // Insere a imagem e o botão na div principal
   imageDiv.append(image, addCartDiv);
-  // imageDiv.appendChild(addCartDiv);
 
   // Cria a div de descrição
   const descriptionDiv = document.createElement("div");
@@ -123,12 +120,10 @@ menu.forEach((item, index) => {
   priceParagraph.textContent = "$" + item.price;
 
   descriptionDiv.append(categorySpan, nameParagraph, priceParagraph);
-  // descriptionDiv.appendChild(nameParagraph);
-  // descriptionDiv.appendChild(priceParagraph);
+
 
   // Monta o <li> e insere na lista
   listItem.append(imageDiv, descriptionDiv);
-  // listItem.appendChild(descriptionDiv);
   list.appendChild(listItem);
 
   // Evento do botão "Add to cart"

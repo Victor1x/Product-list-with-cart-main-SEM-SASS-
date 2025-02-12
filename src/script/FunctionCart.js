@@ -57,7 +57,7 @@ function createCart(item, index, quantity) {
     if (cartItems[index] && cartItems[index].button) {
       resetButton(index);
     }
-    updateCartCount();
+    updateCartCount(); // atualizar a quantidade de itens no carrinho
     updateOrderTotal(); // atualizar o valor total no carrinho
   });
 
