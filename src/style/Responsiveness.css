@@ -1,0 +1,33 @@
+@media (max-width: 1218px) {
+  #main {
+    padding: 2rem 3rem;
+  }
+}
+
+@media (max-width: 1153px) {
+  #main {
+    padding: 1rem 1rem;
+  }
+  .cart {
+    min-width: 300px;
+  }
+}
+@media (max-width: 740px) {
+  #main {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  #menu {
+    width: 100% !important;
+  }
+  #cart_container {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+  }
+  .cart {
+    width: 60% !important;
+    min-width: 310px;
+  }
+}

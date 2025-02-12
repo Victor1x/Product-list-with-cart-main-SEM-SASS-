@@ -43,8 +43,6 @@ function createCart(item, index, quantity) {
 
   divQuantityPrice.append(pQuantityCart, pPriceItemCart, pTotalItemCart);
 
-  // Adiciona a div de descrição ao <li>
-
   divDescription.append(pName, divQuantityPrice);
 
   // Ícone para remover o item (além dos controles “–” e “+”, o usuário pode clicar no ícone de remoção)
@@ -52,29 +50,19 @@ function createCart(item, index, quantity) {
   imgRemove.classList.add("icon__remove__item__cart");
   imgRemove.src = "src/assets/images/icon-remove-item.svg";
   imgRemove.alt = "Remove item";
-  // evento para remover o item
   imgRemove.addEventListener("click", () => {
     removeCartItem(index);
     // Também restaura o botão "Add to cart" para este item
-    console.log(cartItems[index].button);
+    // verifica se o obejeto da li exite e si o buuton que ativou a li exite (linha 258)
     if (cartItems[index] && cartItems[index].button) {
-      const btn = cartItems[index].button;
-      console.log(btn);
-      btn.innerHTML = "";
-      btn.classList.remove("active");
-      const newCartIcon = document.createElement("img");
-      newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-      newCartIcon.alt = "icon-add-to-cart";
-      newCartIcon.classList.add("add__cart__icon");
-      const newCartText = document.createElement("p");
-      newCartText.textContent = "Add to cart";
-      btn.append(newCartIcon, newCartText);
+      resetButton(index);
     }
-    updateOrderTotal();
+    updateCartCount();
+    updateOrderTotal(); // atualizar o valor total no carrinho
   });
 
-  liItemCart.appendChild(divDescription);
-  liItemCart.appendChild(imgRemove);
+  liItemCart.append(divDescription, imgRemove);
+  // liItemCart.appendChild(imgRemove);
   ulCart.appendChild(liItemCart);
 
   // Retorna um objeto com as referências dos elementos que serão atualizados futuramente
@@ -89,7 +77,7 @@ function createCart(item, index, quantity) {
 // Atualiza os valores de quantidade e total de um item do carrinho
 function updateCartItem(cartItem) {
   const { quantity, dom, item } = cartItem;
-  dom.spanQuantity.textContent = quantity;
+  dom.spanQuantity.textContent = quantity + "x";
   const unitPrice = parsePrice(item.price);
   dom.spanTotal.textContent = (quantity * unitPrice).toFixed(2);
 }
@@ -103,18 +91,25 @@ function removeCartItem(index) {
       dom.li.parentNode.removeChild(dom.li);
     }
     // Restaura o botão "Add to cart"
-    const btn = cartItems[index].button;
-    if (btn) {
-      btn.innerHTML = "";
-      btn.classList.remove("active");
-      const newCartIcon = document.createElement("img");
-      newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-      newCartIcon.alt = "icon-add-to-cart";
-      newCartIcon.classList.add("add__cart__icon");
-      const newCartText = document.createElement("p");
-      newCartText.textContent = "Add to cart";
-      btn.append(newCartIcon, newCartText);
-    }
+    resetButton(index);
+    //deleta a o objeto do li do cart(linha 305)
     delete cartItems[index];
+  }
+}
+
+function resetButton(index) {
+  const btn = cartItems[index].button;
+  //verifica si o btn existe(linha 314)
+  if (btn) {
+    // remover o estilo do botão quando está ativo
+    btn.innerHTML = ""; // tira todo o conteudo do botao (toda as tag)
+    btn.classList.remove("active"); // remove a class active
+    const newCartIcon = document.createElement("img"); // coloca a img.svg do carrinho
+    newCartIcon.src = "src/assets/images/icon-add-to-cart.svg"; // config da img
+    newCartIcon.alt = "icon-add-to-cart"; // config da img
+    newCartIcon.classList.add("add__cart__icon"); // add class na img
+    const newCartText = document.createElement("p"); // cria um paragrafo para colocar no button
+    newCartText.textContent = "Add to cart"; // texto do paragrafo
+    btn.append(newCartIcon, newCartText); // colocando icon(img) e text no button
   }
 }

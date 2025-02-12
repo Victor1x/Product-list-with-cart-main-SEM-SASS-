@@ -1,152 +1,116 @@
-const menu = [
-  {
-    image: {
-      thumbnail: "src/assets/images/image-waffle-thumbnail.jpg",
-      mobile: "src/assets/images/image-waffle-mobile.jpg",
-      tablet: "src/assets/images/image-waffle-tablet.jpg",
-      desktop: "src/assets/images/image-waffle-desktop.jpg",
-    },
-    name: "Waffle with Berries",
-    category: "Waffle",
-    price: " 6.50",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-creme-brulee-thumbnail.jpg",
-      mobile: "src/assets/images/image-creme-brulee-mobile.jpg",
-      tablet: "src/assets/images/image-creme-brulee-tablet.jpg",
-      desktop: "src/assets/images/image-creme-brulee-desktop.jpg",
-    },
-    name: "Vanilla Bean Crème Brûlée",
-    category: "Crème Brûlée",
-    price: "  7.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-macaron-thumbnail.jpg",
-      mobile: "src/assets/images/image-macaron-mobile.jpg",
-      tablet: "src/assets/images/image-macaron-tablet.jpg",
-      desktop: "src/assets/images/image-macaron-desktop.jpg",
-    },
-    name: "Macaron Mix of Five",
-    category: "Macaron",
-    price: " 8.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-tiramisu-thumbnail.jpg",
-      mobile: "src/assets/images/image-tiramisu-mobile.jpg",
-      tablet: "src/assets/images/image-tiramisu-tablet.jpg",
-      desktop: "src/assets/images/image-tiramisu-desktop.jpg",
-    },
-    name: "Classic Tiramisu",
-    category: "Tiramisu",
-    price: "5.50",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-baklava-thumbnail.jpg",
-      mobile: "src/assets/images/image-baklava-mobile.jpg",
-      tablet: "src/assets/images/image-baklava-tablet.jpg",
-      desktop: "src/assets/images/image-baklava-desktop.jpg",
-    },
-    name: "Pistachio Baklava",
-    category: "Baklava",
-    price: "4.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-meringue-thumbnail.jpg",
-      mobile: "src/assets/images/image-meringue-mobile.jpg",
-      tablet: "src/assets/images/image-meringue-tablet.jpg",
-      desktop: "src/assets/images/image-meringue-desktop.jpg",
-    },
-    name: "Lemon Meringue Pie",
-    category: "Pie",
-    price: "5.00",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-cake-thumbnail.jpg",
-      mobile: "src/assets/images/image-cake-mobile.jpg",
-      tablet: "src/assets/images/image-cake-tablet.jpg",
-      desktop: "src/assets/images/image-cake-desktop.jpg",
-    },
-    name: "Red Velvet Cake",
-    category: "Cake",
-    price: "4.50 ",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-brownie-thumbnail.jpg",
-      mobile: "src/assets/images/image-brownie-mobile.jpg",
-      tablet: "src/assets/images/image-brownie-tablet.jpg",
-      desktop: "src/assets/images/image-brownie-desktop.jpg",
-    },
-    name: "Salted Caramel Brownie",
-    category: "Brownie",
-    price: "4.50",
-  },
-  {
-    image: {
-      thumbnail: "src/assets/images/image-panna-cotta-thumbnail.jpg",
-      mobile: "src/assets/images/image-panna-cotta-mobile.jpg",
-      tablet: "src/assets/images/image-panna-cotta-tablet.jpg",
-      desktop: "src/assets/images/image-panna-cotta-desktop.jpg",
-    },
-    name: "Vanilla Panna Cotta",
-    category: "Panna Cotta",
-    price: "6.50 ",
-  },
-];
+// --- Variáveis Globais ---
+const cartItems = {}; // Objeto que guardará os itens do carrinho, indexados (ex: pelo índice do menu)
 
-menu.forEach((item) => {
-  const list = document.querySelector(".list");
+// Função auxiliar para converter uma string de preço em número (removendo "$" e espaços)
+function parsePrice(priceStr) {
+  return parseFloat(priceStr.replace(/[^0-9.]/g, ""));
+}
 
-  // Criando o <li>
+// Função para atualizar o Order Total (soma de todos os itens)
 
+function updateCartCount() {
+  let count = 0;
+  for (let key in cartItems) {
+    count += cartItems[key].quantity;
+  }
+  document.getElementById("cart-count").textContent = count;
+}
+function updateOrderTotal() {
+  let total = 0;
+  for (let key in cartItems) {
+    const { item, quantity } = cartItems[key];
+    total += quantity * parsePrice(item.price);
+  }
+  priceTotalElement.textContent = "$" + total.toFixed(2);
+}
+
+// Inicializa (ou cria) os elementos fixos do carrinho: lista, Order Total, seção carbon neutral e botão de checkout.
+const cartContainer = document.querySelector(".cart");
+let ulCart = document.querySelector(".cart__list");
+if (!ulCart) {
+  ulCart = document.createElement("ul");
+  ulCart.classList.add("cart__list");
+  cartContainer.appendChild(ulCart);
+}
+let priceTotalElement = document.querySelector(".price__total");
+if (!priceTotalElement) {
+  const divPriceTotal = document.createElement("div");
+  divPriceTotal.classList.add("div__price__total");
+
+  const pOrderTotal = document.createElement("p");
+  pOrderTotal.textContent = "Order Total";
+
+  priceTotalElement = document.createElement("h4");
+  priceTotalElement.classList.add("price__total");
+  priceTotalElement.textContent = "$0.00";
+
+  divPriceTotal.append(pOrderTotal, priceTotalElement);
+  // divPriceTotal.appendChild();
+  cartContainer.appendChild(divPriceTotal);
+
+  // Cria a seção "carbon neutral"
+  const divCarbonNeutral = document.createElement("div");
+  divCarbonNeutral.classList.add("div__carbon__neutral");
+  const imgCarbonNeutral = document.createElement("img");
+  imgCarbonNeutral.src = "src/assets/images/icon-carbon-neutral.svg";
+  imgCarbonNeutral.alt = "";
+  const pCarbonNeutral = document.createElement("p");
+  pCarbonNeutral.innerHTML =
+    'This is a <span class="span__carbon__neutral">carbon-neutral</span> delivery';
+
+  divCarbonNeutral.append(imgCarbonNeutral, pCarbonNeutral);
+  // divCarbonNeutral.appendChild();
+  cartContainer.appendChild(divCarbonNeutral);
+
+  // Cria o botão de checkout
+  const buttonCheckout = document.createElement("button");
+  buttonCheckout.classList.add("button__checkout");
+  buttonCheckout.textContent = "Confirm Order";
+  cartContainer.appendChild(buttonCheckout);
+}
+
+// --- Renderiza os Itens do Menu ---
+const list = document.querySelector(".list");
+
+menu.forEach((item, index) => {
+  // Criação do <li> do menu
   const listItem = document.createElement("li");
   listItem.setAttribute("role", "listitem");
   listItem.classList.add("list__item");
   listItem.setAttribute("aria-label", item.name);
 
-  // Criando a div da imagem
+  // Criação da div da imagem
   const imageDiv = document.createElement("div");
-  imageDiv.classList.add("list__item__image", "image__waffle");
+  imageDiv.classList.add("list__item__image");
 
-  // Criando a imagem principal
   const image = document.createElement("img");
   image.classList.add("img_item");
   image.src = item.image.desktop;
   image.alt = item.name;
 
-  // Criando a div do botão "Add to cart"
+  // Criação do botão "Add to cart"
   const addCartDiv = document.createElement("div");
   addCartDiv.classList.add("add__cart");
-
-  // Criando o ícone do carrinho
+  // Conteúdo padrão do botão
   const cartIcon = document.createElement("img");
   cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
   cartIcon.alt = "icon-add-to-cart";
   cartIcon.classList.add("add__cart__icon");
 
-  // Criando o texto "Add to cart"
   const cartText = document.createElement("p");
   cartText.textContent = "Add to cart";
 
-  // Adicionando o ícone e o texto ao botão do carrinho
-  addCartDiv.appendChild(cartIcon);
-  addCartDiv.appendChild(cartText);
+  addCartDiv.append(cartIcon, cartText);
+  // addCartDiv.appendChild(cartText);
 
-  // Adicionando a imagem e o botão do carrinho à div principal da imagem
-  imageDiv.appendChild(image);
-  imageDiv.appendChild(addCartDiv);
+  // Insere a imagem e o botão na div principal
+  imageDiv.append(image, addCartDiv);
+  // imageDiv.appendChild(addCartDiv);
 
-  // Criando a div da descrição
+  // Cria a div de descrição
   const descriptionDiv = document.createElement("div");
-  descriptionDiv.classList.add("list__item__decription");
+  descriptionDiv.classList.add("list__item__description");
 
-  // Criando os elementos de texto
   const categorySpan = document.createElement("span");
   categorySpan.textContent = item.category;
 
@@ -156,229 +120,92 @@ menu.forEach((item) => {
 
   const priceParagraph = document.createElement("p");
   priceParagraph.classList.add("price");
-  priceParagraph.textContent = "$ " + item.price;
-  // priceParagraph.textContent = item.price;
+  priceParagraph.textContent = "$" + item.price;
 
-  // Adicionando os textos à div da descrição
-  descriptionDiv.appendChild(categorySpan);
-  descriptionDiv.appendChild(nameParagraph);
-  descriptionDiv.appendChild(priceParagraph);
+  descriptionDiv.append(categorySpan, nameParagraph, priceParagraph);
+  // descriptionDiv.appendChild(nameParagraph);
+  // descriptionDiv.appendChild(priceParagraph);
 
-  // Adicionando as divs ao <li>
-  listItem.appendChild(imageDiv);
-  listItem.appendChild(descriptionDiv);
-
-  // Adicionando o <li> à lista
+  // Monta o <li> e insere na lista
+  listItem.append(imageDiv, descriptionDiv);
+  // listItem.appendChild(descriptionDiv);
   list.appendChild(listItem);
-});
 
-const items__cart = [];
+  // Evento do botão "Add to cart"
+  addCartDiv.addEventListener("click", () => {
+    // Se o botão não estiver ativo, cria o controle de quantidade e o item no carrinho
+    if (!addCartDiv.classList.contains("active")) {
+      // Transforma o botão: limpa o conteúdo e adiciona os controles “–”, quantidade e “+”
+      addCartDiv.innerHTML = "";
+      addCartDiv.classList.add("active");
 
-document.querySelectorAll(".add__cart").forEach((button, index) => {
-  button.addEventListener("click", () => {
-    button.innerHTML = "";
-    button.classList.add("active");
-    const icon_de_menos = document.createElement("p");
-    icon_de_menos.classList.add("icon__cart");
-    icon_de_menos.classList.add("icone_de_menos");
-    icon_de_menos.textContent = "-";
+      const minusBtn = document.createElement("p");
+      minusBtn.classList.add("icon__cart", "icone_de_menos");
+      minusBtn.textContent = "-";
 
-    const quantity = document.createElement("p");
-    quantity.classList.add("quantity");
-    quantity.textContent = 1;
+      const quantityDisplay = document.createElement("p");
+      quantityDisplay.classList.add("quantity");
+      quantityDisplay.textContent = "1";
 
-    const icon_de_mais = document.createElement("p");
-    icon_de_mais.classList.add("icon__cart");
-    icon_de_mais.classList.add("icone_de_mais");
-    icon_de_mais.textContent = "+";
+      const plusBtn = document.createElement("p");
+      plusBtn.classList.add("icon__cart", "icone_de_mais");
+      plusBtn.textContent = "+";
 
-    button.append(icon_de_menos, quantity, icon_de_mais);
+      addCartDiv.append(minusBtn, quantityDisplay, plusBtn);
 
-    createCart(menu[index], quantity.textContent);
+      // Cria o item no carrinho e guarda a referência
+      const cartItemElement = createCart(item, index, 1);
 
-    icon_de_mais.addEventListener("click", (e) => {
-      e.stopPropagation(); // Impede que o clique seja propagado para o botão pai
-      quantity.textContent = Number(quantity.textContent) + 1;
-    });
+      cartItems[index] = {
+        item: item,
+        quantity: 1,
+        dom: cartItemElement, // Objeto com referências do DOM (veja a função createCart)
+        button: addCartDiv, // Guarda a referência ao botão para que possa ser restaurado
+      };
+      updateCartCount();
+      updateOrderTotal();
 
-    // Se desejar implementar a funcionalidade de diminuir a quantidade:
-    icon_de_menos.addEventListener("click", (e) => {
-      e.stopPropagation();
-      let currentQuantity = Number(quantity.textContent);
-      if (currentQuantity > 1) {
-        quantity.textContent = currentQuantity - 1;
-      } else {
-        // Se a quantidade chegar a 0 (ou 1 e o usuário clicar em "-"), restaura o botão original
-        button.innerHTML = "";
-        button.classList.remove("active");
+      // Evento do botão "+"
+      plusBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        let currentQuantity = Number(quantityDisplay.textContent);
+        currentQuantity++;
+        quantityDisplay.textContent = currentQuantity;
+        cartItems[index].quantity = currentQuantity;
+        updateCartItem(cartItems[index]);
+        updateCartCount();
+        updateOrderTotal();
+      });
 
-        const cartIcon = document.createElement("img");
-        cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-        cartIcon.alt = "icon-add-to-cart";
-        cartIcon.classList.add("add__cart__icon");
-
-        const cartText = document.createElement("p");
-        cartText.textContent = "Add to cart";
-
-        button.append(cartIcon, cartText);
-      }
-    });
+      // Evento do botão "–"
+      minusBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        let currentQuantity = Number(quantityDisplay.textContent);
+        if (currentQuantity > 1) {
+          currentQuantity--;
+          quantityDisplay.textContent = currentQuantity;
+          cartItems[index].quantity = currentQuantity;
+          updateCartItem(cartItems[index]);
+          updateCartCount();
+          updateOrderTotal();
+        } else {
+          // Se a quantidade chegar a 0, remove o item do carrinho e restaura o botão original
+          removeCartItem(index);
+          addCartDiv.innerHTML = "";
+          addCartDiv.classList.remove("active");
+          // Restaura o conteúdo original do botão
+          const newCartIcon = document.createElement("img");
+          newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+          newCartIcon.alt = "icon-add-to-cart";
+          newCartIcon.classList.add("add__cart__icon");
+          const newCartText = document.createElement("p");
+          newCartText.textContent = "Add to cart";
+          addCartDiv.append(newCartIcon, newCartText);
+          updateCartCount();
+          updateOrderTotal();
+        }
+      });
+    }
   });
 });
 
-function createCart(item, quantity) {
-  // Cria o container principal da seção do carrinho com a classe "cart"
-  const cart = document.querySelector(".cart");
-
-  // 1. Criação da lista de itens (ul com class "cart__list")
-  const ulCart = document.querySelector(".cart__list");
-
-  // 1.1 Criação de um item do carrinho (li com class "li__item__cart")
-  const liItemCart = document.createElement("li");
-  liItemCart.classList.add("li__item__cart");
-
-  // 1.1.1 Criação da div de descrição do item
-  const divDescription = document.createElement("div");
-  divDescription.classList.add("item__cart__description");
-
-  // Nome do item
-  const pName = document.createElement("p");
-  pName.classList.add("name");
-  pName.textContent = item.name;
-
-  // Div que agrupa quantidade e preços
-  const divQuantityPrice = document.createElement("div");
-  divQuantityPrice.classList.add("quantity_price_item");
-
-  // Parágrafo para a quantidade
-  const pQuantityCart = document.createElement("p");
-  pQuantityCart.classList.add("quantity_cart");
-
-  // Span que mostra a quantidade (valor unitário)
-  const spanCartPriceTotal = document.createElement("span");
-  spanCartPriceTotal.classList.add("cart__price__total");
-  spanCartPriceTotal.textContent = quantity.textContent;
-
-  // Adiciona o span e o "x" indicando quantidade
-  pQuantityCart.appendChild(spanCartPriceTotal);
-  pQuantityCart.insertAdjacentText("beforeend", "x");
-
-  // Parágrafo para o preço unitário do item
-  const pPriceItemCart = document.createElement("p");
-  pPriceItemCart.classList.add("price_item_cart");
-  pPriceItemCart.textContent = item.price;
-
-  // Parágrafo para o total do item (com span interno)
-  const pTotalItemCart = document.createElement("p");
-  pTotalItemCart.classList.add("total_item_cart");
-
-  // Cria e adiciona o texto "$"
-  const textDollar = document.createTextNode("$");
-  pTotalItemCart.appendChild(textDollar);
-
-  // Cria o <span> com a classe e o conteúdo "13"
-  const spanTotal = document.createElement("span");
-  spanTotal.classList.add("span_total_item_cart");
-  spanTotal.textContent = Number(quantity.textContent) * Number(item.price);
-  pTotalItemCart.appendChild(spanTotal);
-
-  // Cria e adiciona o texto ".00"
-  const textDecimals = document.createTextNode(".00");
-  pTotalItemCart.appendChild(textDecimals);
-
-  // Agrupa os parágrafos de quantidade, preço unitário e total
-  divQuantityPrice.appendChild(pQuantityCart);
-  divQuantityPrice.appendChild(pPriceItemCart);
-  divQuantityPrice.appendChild(pTotalItemCart);
-
-  // Adiciona o nome e a div de quantidade/preço na descrição do item
-  divDescription.appendChild(pName);
-  divDescription.appendChild(divQuantityPrice);
-
-  // 1.1.2 Cria a imagem para remover o item
-  const imgRemove = document.createElement("img");
-  imgRemove.classList.add("icon__remove__item__cart");
-  imgRemove.src = "src/assets/images/icon-remove-item.svg";
-  imgRemove.alt = "";
-
-  // Monta o item do carrinho (li)
-  liItemCart.appendChild(divDescription);
-  liItemCart.appendChild(imgRemove);
-
-  // Adiciona o item (li) à lista (ul)
-  ulCart.appendChild(liItemCart);
-
-  // 2. Criação da seção de "Order Total"
-  // <div class="div__price__total">
-  const divPriceTotal = document.createElement("div");
-  divPriceTotal.classList.add("div__price__total");
-
-  const pOrderTotal = document.createElement("p");
-  pOrderTotal.textContent = "Order Total";
-
-  const h4PriceTotal = document.createElement("h4");
-  h4PriceTotal.classList.add("price__total");
-  h4PriceTotal.textContent = "$45.90";
-
-  divPriceTotal.appendChild(pOrderTotal);
-  divPriceTotal.appendChild(h4PriceTotal);
-  let verificacao = false;
-  // 3. Criação da seção "carbon neutral"
-  // <div class="div__carbon__neutral">
-  // 5. Monta a estrutura dentro da div "cart"
-  // Adiciona a lista de itens (ul) e as demais seções à div "cart"
-  cart.appendChild(ulCart);
-  cart.appendChild(divPriceTotal);
-  if (!verificacao) {
-    const divCarbonNeutral = document.createElement("div");
-    divCarbonNeutral.classList.add("div__carbon__neutral");
-
-    const imgCarbonNeutral = document.createElement("img");
-    imgCarbonNeutral.src = "src/assets/images/icon-carbon-neutral.svg";
-    imgCarbonNeutral.alt = "";
-
-    const pCarbonNeutral = document.createElement("p");
-    pCarbonNeutral.innerHTML =
-      'This is a <span class="span__carbon__neutral">carbon-neutral</span> delivery';
-
-    divCarbonNeutral.appendChild(imgCarbonNeutral);
-    divCarbonNeutral.appendChild(pCarbonNeutral);
-
-    // 4. Criação do botão de checkout
-    const buttonCheckout = document.createElement("button");
-    buttonCheckout.classList.add("button__checkout");
-    buttonCheckout.textContent = "Cofirm Order";
-
-    cart.appendChild(divCarbonNeutral);
-    cart.appendChild(buttonCheckout);
-    verificacao = true;
-    console.log("entrou ");
-  }
-}
-
-// Função para criar dinamicamente o item "empty cart"
-function createEmptyCartItem(index) {
-  // Cria o elemento <li> e adiciona a classe
-
-  const li = document.createElement("li");
-  li.classList.add("li__cart__empty");
-
-  // Cria o elemento <img> e define os atributos
-  const img = document.createElement("img");
-  img.src = "src/assets/images/illustration-empty-cart.svg";
-  img.alt = "";
-
-  // Cria o elemento <p> e adiciona o texto
-  const p = document.createElement("p");
-  p.textContent = "Your added items will appear here";
-
-  // Adiciona o <img> e o <p> como filhos do <li>
-  li.appendChild(img);
-  li.appendChild(p);
-  const cart__list = document.querySelector(".cart__list");
-
-  cart__list.appendChild(li);
-  // Seleciona o <ul> pelo id e adiciona o <li>
-}
-
-// Chama a função para criar e inserir o item no DOM

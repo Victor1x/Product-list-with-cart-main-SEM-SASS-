@@ -8,10 +8,11 @@ main {
   min-height: 100vh;
   display: flex;
   padding: 3rem 5rem;
+  justify-content: space-around;
   /* border: 2px solid red; */
   /* background-color: var(--rose-100); */
 }
-#menu {
+#menu{
   width: 70%;
   padding-top: 20px;
   /* border: 2px solid red; */
