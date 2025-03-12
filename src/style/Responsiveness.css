@@ -1,19 +1,15 @@
 @media (max-width: 1218px) {
   #main {
-    padding: 2rem 3rem;
-  }
-}
-
-@media (max-width: 1153px) {
-  #main {
-    padding: 1rem 1rem;
+    padding: 1rem 2rem;
   }
   .cart {
     min-width: 300px;
   }
 }
-@media (max-width: 740px) {
+
+@media (max-width: 757px) {
   #main {
+    padding: 1rem 1rem;
     flex-direction: column;
     align-items: center;
     gap: 20px;
@@ -28,6 +24,9 @@
   }
   .cart {
     width: 60% !important;
-    min-width: 310px;
+    min-width: 300px;
+  }
+  .cart__list {
+    max-height: 200px !important;
   }
 }

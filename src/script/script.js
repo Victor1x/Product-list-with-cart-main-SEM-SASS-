@@ -71,136 +71,268 @@ if (!priceTotalElement) {
 // --- Renderiza os Itens do Menu ---
 const list = document.querySelector(".list");
 
-menu.forEach((item, index) => {
-  // Criação do <li> do menu
-  const listItem = document.createElement("li");
-  listItem.setAttribute("role", "listitem");
-  listItem.classList.add("list__item");
-  listItem.setAttribute("aria-label", item.name);
+async function menu(dataMenu) {
 
-  // Criação da div da imagem
-  const imageDiv = document.createElement("div");
-  imageDiv.classList.add("list__item__image");
+  dataMenu.forEach((item, index) => {
+    // Criação do <li> do menu
+    const listItem = document.createElement("li");
+    listItem.setAttribute("role", "listitem");
+    listItem.classList.add("list__item");
+    listItem.setAttribute("aria-label", item.name);
 
-  const image = document.createElement("img");
-  image.classList.add("img_item");
-  image.src = item.image.desktop;
-  image.alt = item.name;
+    // Criação da div da imagem
+    const imageDiv = document.createElement("div");
+    imageDiv.classList.add("list__item__image");
 
-  // Criação do botão "Add to cart"
-  const addCartDiv = document.createElement("div");
-  addCartDiv.classList.add("add__cart");
-  // Conteúdo padrão do botão
-  const cartIcon = document.createElement("img");
-  cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-  cartIcon.alt = "icon-add-to-cart";
-  cartIcon.classList.add("add__cart__icon");
+    const image = document.createElement("img");
+    image.classList.add("img_item");
+    image.src = item.image.desktop;
+    image.alt = item.name;
 
-  const cartText = document.createElement("p");
-  cartText.textContent = "Add to cart";
+    // Criação do botão "Add to cart"
+    const addCartDiv = document.createElement("div");
+    addCartDiv.classList.add("add__cart");
+    // Conteúdo padrão do botão
+    const cartIcon = document.createElement("img");
+    cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+    cartIcon.alt = "icon-add-to-cart";
+    cartIcon.classList.add("add__cart__icon");
 
-  addCartDiv.append(cartIcon, cartText);
+    const cartText = document.createElement("p");
+    cartText.textContent = "Add to cart";
 
-  // Insere a imagem e o botão na div principal
-  imageDiv.append(image, addCartDiv);
+    addCartDiv.append(cartIcon, cartText);
 
-  // Cria a div de descrição
-  const descriptionDiv = document.createElement("div");
-  descriptionDiv.classList.add("list__item__description");
+    // Insere a imagem e o botão na div principal
+    imageDiv.append(image, addCartDiv);
 
-  const categorySpan = document.createElement("span");
-  categorySpan.textContent = item.category;
+    // Cria a div de descrição
+    const descriptionDiv = document.createElement("div");
+    descriptionDiv.classList.add("list__item__description");
 
-  const nameParagraph = document.createElement("p");
-  nameParagraph.classList.add("name");
-  nameParagraph.textContent = item.name;
+    const categorySpan = document.createElement("span");
+    categorySpan.textContent = item.category;
 
-  const priceParagraph = document.createElement("p");
-  priceParagraph.classList.add("price");
-  priceParagraph.textContent = "$" + item.price;
+    const nameParagraph = document.createElement("p");
+    nameParagraph.classList.add("name");
+    nameParagraph.textContent = item.name;
 
-  descriptionDiv.append(categorySpan, nameParagraph, priceParagraph);
+    const priceParagraph = document.createElement("p");
+    priceParagraph.classList.add("price");
+    priceParagraph.textContent = "$" + item.price;
 
+    descriptionDiv.append(categorySpan, nameParagraph, priceParagraph);
 
-  // Monta o <li> e insere na lista
-  listItem.append(imageDiv, descriptionDiv);
-  list.appendChild(listItem);
+    // Monta o <li> e insere na lista
+    listItem.append(imageDiv, descriptionDiv);
+    list.appendChild(listItem);
 
-  // Evento do botão "Add to cart"
-  addCartDiv.addEventListener("click", () => {
-    // Se o botão não estiver ativo, cria o controle de quantidade e o item no carrinho
-    if (!addCartDiv.classList.contains("active")) {
-      // Transforma o botão: limpa o conteúdo e adiciona os controles “–”, quantidade e “+”
-      addCartDiv.innerHTML = "";
-      addCartDiv.classList.add("active");
+    // Evento do botão "Add to cart"
+    addCartDiv.addEventListener("click", () => {
+      // Se o botão não estiver ativo, cria o controle de quantidade e o item no carrinho
+      if (!addCartDiv.classList.contains("active")) {
+        // Transforma o botão: limpa o conteúdo e adiciona os controles “–”, quantidade e “+”
+        addCartDiv.innerHTML = "";
+        addCartDiv.classList.add("active");
 
-      const minusBtn = document.createElement("p");
-      minusBtn.classList.add("icon__cart", "icone_de_menos");
-      minusBtn.textContent = "-";
+        const minusBtn = document.createElement("p");
+        minusBtn.classList.add("icon__cart", "icone_de_menos");
+        minusBtn.textContent = "-";
 
-      const quantityDisplay = document.createElement("p");
-      quantityDisplay.classList.add("quantity");
-      quantityDisplay.textContent = "1";
+        const quantityDisplay = document.createElement("p");
+        quantityDisplay.classList.add("quantity");
+        quantityDisplay.textContent = "1";
 
-      const plusBtn = document.createElement("p");
-      plusBtn.classList.add("icon__cart", "icone_de_mais");
-      plusBtn.textContent = "+";
+        const plusBtn = document.createElement("p");
+        plusBtn.classList.add("icon__cart", "icone_de_mais");
+        plusBtn.textContent = "+";
 
-      addCartDiv.append(minusBtn, quantityDisplay, plusBtn);
+        addCartDiv.append(minusBtn, quantityDisplay, plusBtn);
 
-      // Cria o item no carrinho e guarda a referência
-      const cartItemElement = createCart(item, index, 1);
+        // Cria o item no carrinho e guarda a referência
+        const cartItemElement = createCart(item, index, 1);
 
-      cartItems[index] = {
-        item: item,
-        quantity: 1,
-        dom: cartItemElement, // Objeto com referências do DOM (veja a função createCart)
-        button: addCartDiv, // Guarda a referência ao botão para que possa ser restaurado
-      };
-      updateCartCount();
-      updateOrderTotal();
-
-      // Evento do botão "+"
-      plusBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        let currentQuantity = Number(quantityDisplay.textContent);
-        currentQuantity++;
-        quantityDisplay.textContent = currentQuantity;
-        cartItems[index].quantity = currentQuantity;
-        updateCartItem(cartItems[index]);
+        cartItems[index] = {
+          item: item,
+          quantity: 1,
+          dom: cartItemElement, // Objeto com referências do DOM (veja a função createCart)
+          button: addCartDiv, // Guarda a referência ao botão para que possa ser restaurado
+        };
         updateCartCount();
         updateOrderTotal();
-      });
 
-      // Evento do botão "–"
-      minusBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        let currentQuantity = Number(quantityDisplay.textContent);
-        if (currentQuantity > 1) {
-          currentQuantity--;
+        // Evento do botão "+"
+        plusBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          let currentQuantity = Number(quantityDisplay.textContent);
+          currentQuantity++;
           quantityDisplay.textContent = currentQuantity;
           cartItems[index].quantity = currentQuantity;
           updateCartItem(cartItems[index]);
           updateCartCount();
           updateOrderTotal();
-        } else {
-          // Se a quantidade chegar a 0, remove o item do carrinho e restaura o botão original
-          removeCartItem(index);
-          addCartDiv.innerHTML = "";
-          addCartDiv.classList.remove("active");
-          // Restaura o conteúdo original do botão
-          const newCartIcon = document.createElement("img");
-          newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
-          newCartIcon.alt = "icon-add-to-cart";
-          newCartIcon.classList.add("add__cart__icon");
-          const newCartText = document.createElement("p");
-          newCartText.textContent = "Add to cart";
-          addCartDiv.append(newCartIcon, newCartText);
-          updateCartCount();
-          updateOrderTotal();
-        }
-      });
-    }
-  });
-});
+        });
 
+        // Evento do botão "–"
+        minusBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          let currentQuantity = Number(quantityDisplay.textContent);
+          if (currentQuantity > 1) {
+            currentQuantity--;
+            quantityDisplay.textContent = currentQuantity;
+            cartItems[index].quantity = currentQuantity;
+            updateCartItem(cartItems[index]);
+            updateCartCount();
+            updateOrderTotal();
+          } else {
+            // Se a quantidade chegar a 0, remove o item do carrinho e restaura o botão original
+            removeCartItem(index);
+            addCartDiv.innerHTML = "";
+            addCartDiv.classList.remove("active");
+            // Restaura o conteúdo original do botão
+            const newCartIcon = document.createElement("img");
+            newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+            newCartIcon.alt = "icon-add-to-cart";
+            newCartIcon.classList.add("add__cart__icon");
+            const newCartText = document.createElement("p");
+            newCartText.textContent = "Add to cart";
+            addCartDiv.append(newCartIcon, newCartText);
+            updateCartCount();
+            updateOrderTotal();
+          }
+        });
+      }
+    });
+  });
+}
+// menu.forEach((item, index) => {
+//   // Criação do <li> do menu
+//   const listItem = document.createElement("li");
+//   listItem.setAttribute("role", "listitem");
+//   listItem.classList.add("list__item");
+//   listItem.setAttribute("aria-label", item.name);
+
+//   // Criação da div da imagem
+//   const imageDiv = document.createElement("div");
+//   imageDiv.classList.add("list__item__image");
+
+//   const image = document.createElement("img");
+//   image.classList.add("img_item");
+//   image.src = item.image.desktop;
+//   image.alt = item.name;
+
+//   // Criação do botão "Add to cart"
+//   const addCartDiv = document.createElement("div");
+//   addCartDiv.classList.add("add__cart");
+//   // Conteúdo padrão do botão
+//   const cartIcon = document.createElement("img");
+//   cartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+//   cartIcon.alt = "icon-add-to-cart";
+//   cartIcon.classList.add("add__cart__icon");
+
+//   const cartText = document.createElement("p");
+//   cartText.textContent = "Add to cart";
+
+//   addCartDiv.append(cartIcon, cartText);
+
+//   // Insere a imagem e o botão na div principal
+//   imageDiv.append(image, addCartDiv);
+
+//   // Cria a div de descrição
+//   const descriptionDiv = document.createElement("div");
+//   descriptionDiv.classList.add("list__item__description");
+
+//   const categorySpan = document.createElement("span");
+//   categorySpan.textContent = item.category;
+
+//   const nameParagraph = document.createElement("p");
+//   nameParagraph.classList.add("name");
+//   nameParagraph.textContent = item.name;
+
+//   const priceParagraph = document.createElement("p");
+//   priceParagraph.classList.add("price");
+//   priceParagraph.textContent = "$" + item.price;
+
+//   descriptionDiv.append(categorySpan, nameParagraph, priceParagraph);
+
+//   // Monta o <li> e insere na lista
+//   listItem.append(imageDiv, descriptionDiv);
+//   list.appendChild(listItem);
+
+//   // Evento do botão "Add to cart"
+//   addCartDiv.addEventListener("click", () => {
+//     // Se o botão não estiver ativo, cria o controle de quantidade e o item no carrinho
+//     if (!addCartDiv.classList.contains("active")) {
+//       // Transforma o botão: limpa o conteúdo e adiciona os controles “–”, quantidade e “+”
+//       addCartDiv.innerHTML = "";
+//       addCartDiv.classList.add("active");
+
+//       const minusBtn = document.createElement("p");
+//       minusBtn.classList.add("icon__cart", "icone_de_menos");
+//       minusBtn.textContent = "-";
+
+//       const quantityDisplay = document.createElement("p");
+//       quantityDisplay.classList.add("quantity");
+//       quantityDisplay.textContent = "1";
+
+//       const plusBtn = document.createElement("p");
+//       plusBtn.classList.add("icon__cart", "icone_de_mais");
+//       plusBtn.textContent = "+";
+
+//       addCartDiv.append(minusBtn, quantityDisplay, plusBtn);
+
+//       // Cria o item no carrinho e guarda a referência
+//       const cartItemElement = createCart(item, index, 1);
+
+//       cartItems[index] = {
+//         item: item,
+//         quantity: 1,
+//         dom: cartItemElement, // Objeto com referências do DOM (veja a função createCart)
+//         button: addCartDiv, // Guarda a referência ao botão para que possa ser restaurado
+//       };
+//       updateCartCount();
+//       updateOrderTotal();
+
+//       // Evento do botão "+"
+//       plusBtn.addEventListener("click", (e) => {
+//         e.stopPropagation();
+//         let currentQuantity = Number(quantityDisplay.textContent);
+//         currentQuantity++;
+//         quantityDisplay.textContent = currentQuantity;
+//         cartItems[index].quantity = currentQuantity;
+//         updateCartItem(cartItems[index]);
+//         updateCartCount();
+//         updateOrderTotal();
+//       });
+
+//       // Evento do botão "–"
+//       minusBtn.addEventListener("click", (e) => {
+//         e.stopPropagation();
+//         let currentQuantity = Number(quantityDisplay.textContent);
+//         if (currentQuantity > 1) {
+//           currentQuantity--;
+//           quantityDisplay.textContent = currentQuantity;
+//           cartItems[index].quantity = currentQuantity;
+//           updateCartItem(cartItems[index]);
+//           updateCartCount();
+//           updateOrderTotal();
+//         } else {
+//           // Se a quantidade chegar a 0, remove o item do carrinho e restaura o botão original
+//           removeCartItem(index);
+//           addCartDiv.innerHTML = "";
+//           addCartDiv.classList.remove("active");
+//           // Restaura o conteúdo original do botão
+//           const newCartIcon = document.createElement("img");
+//           newCartIcon.src = "src/assets/images/icon-add-to-cart.svg";
+//           newCartIcon.alt = "icon-add-to-cart";
+//           newCartIcon.classList.add("add__cart__icon");
+//           const newCartText = document.createElement("p");
+//           newCartText.textContent = "Add to cart";
+//           addCartDiv.append(newCartIcon, newCartText);
+//           updateCartCount();
+//           updateOrderTotal();
+//         }
+//       });
+//     }
+//   });
+// });
